@@ -35,29 +35,54 @@ function bpew_load(){
  * Handlers
  */
 function bpew_extend_form($class, $return, $instance){
-    echo '<hr /><p>'.__('Display the widget if it satisfies BuddyPress-specific options below:','bpew').'</p>';
+    echo '<hr /><p>'.__('Display the widget if it satisfies WordPress or BuddyPress options below:','bpew').'</p>';
 
     if(!isset($instance['bp_component_type']))
         $instance['bp_component_type'] = '';
     if(!isset($instance['bp_component_ids']))
         $instance['bp_component_ids'] = '';
     
-    echo '<p>
-            <label id="'.$class->get_field_id('bp_component_type').'">'.__('Please select for what to apply','bpew').':</label><br />
-            <input '.checked($instance['bp_component_type'], '', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value=""/> '.__('Do not apply', 'bpew').'<br />
-            <input '.checked($instance['bp_component_type'], 'members', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="members"/> '.__('Members profiles pages', 'bpew').'<br />
-            <input '.checked($instance['bp_component_type'], 'members_dir', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="members_dir"/> '.__('Members Directory page', 'bpew').'<br />
-            <input '.checked($instance['bp_component_type'], 'groups', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="groups"/> '.__('Groups internal pages', 'bpew').'<br />
-            <input '.checked($instance['bp_component_type'], 'groups_dir', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="groups_dir"/> '.__('Groups Directory page', 'bpew').'
-        </p>';
+    echo '<style>
+        .bpew_fieldset{
+            border:1px solid #ccc;
+            padding:10px 10px 0;
+            margin:0 0 15px;
+        }
+        </style>';
+    echo '<script>
+        
+        </script>';
     
-    echo '<p>
-            <label id="'.$class->get_field_id('bp_component_ids').'">'.__('IDs','bpew').':</label>
-            <input id="'.$class->get_field_id('bp_component_ids').'" type="text" name="'.$class->get_field_name('bp_component_ids').'" value="'.$instance['bp_component_ids'].'"/><br />
-            <span class="description">'.__('Comma separated, no spaces','bpew').'</span>
-        </p>';
+    /*
+    echo '<fieldset class="bpew_fieldset" id="bpew_wp_set"><legend>'.__('WordPress', 'bpew').'</legend>';
+        echo '<p>
+                <label><input '.checked($instance['wp_component_type'], 'pages', false).' type="checkbox" name="'.$class->get_field_name('wp_component_type').'" value="pages"> '.__('Pages', 'bpew').'</label><br />
+                <label><input '.checked($instance['wp_component_type'], 'categories', false).' type="checkbox" name="'.$class->get_field_name('wp_component_type').'" value="categories"> '.__('Categories', 'bpew').'</label><br />
+                <label><input '.checked($instance['wp_component_type'], 'tags', false).' type="checkbox" name="'.$class->get_field_name('wp_component_type').'" value="tags"> '.__('Tags', 'bpew').'</label>';
+                do_action('bpew_extend_form_wp', $class, $return, $instance);
+        echo '</p>';
+    echo '</fieldset>';
+    */
     
-    add_action('bpew_extend_form', $class, $return, $instance);
+    echo '<fieldset class="bpew_fieldset" id="bpew_bp_set"><legend>'.__('BuddyPress only', 'bpew').'</legend>';
+        echo '<p>
+                <label id="'.$class->get_field_id('bp_component_type').'">'.__('Please select for what to apply','bpew').':</label><br />
+                <input '.checked($instance['bp_component_type'], '', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value=""/> '.__('Do not apply', 'bpew').'<br />
+                <input '.checked($instance['bp_component_type'], 'members', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="members"/> '.__('Members profiles pages', 'bpew').'<br />
+                <input '.checked($instance['bp_component_type'], 'members_dir', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="members_dir"/> '.__('Members Directory page', 'bpew').'<br />
+                <input '.checked($instance['bp_component_type'], 'groups', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="groups"/> '.__('Groups internal pages', 'bpew').'<br />
+                <input '.checked($instance['bp_component_type'], 'groups_dir', false).' type="radio" name="'.$class->get_field_name('bp_component_type').'" value="groups_dir"/> '.__('Groups Directory page', 'bpew');
+                do_action('bpew_extend_form_bp_only', $class, $return, $instance);
+            echo '</p>';
+
+        echo '<p>
+                <label id="'.$class->get_field_id('bp_component_ids').'">'.__('IDs','bpew').':</label>
+                <input id="'.$class->get_field_id('bp_component_ids').'" type="text" name="'.$class->get_field_name('bp_component_ids').'" value="'.$instance['bp_component_ids'].'"/><br />
+                <span class="description">'.__('Comma separated, no spaces','bpew').'</span>
+            </p>';
+    echo '</fieldset>';
+    
+    do_action('bpew_extend_form', $class, $return, $instance);
     
     return $return;
 }
